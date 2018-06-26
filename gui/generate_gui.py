@@ -5,6 +5,8 @@ import pytz
 import requests
 import json
 
+from config.config import cfg
+
 # Get Match
 contents = requests.get('http://api.football-data.org/v1/competitions/467/fixtures')
 contents = json.loads(contents.text)
@@ -43,7 +45,11 @@ filein = open('bets_template.html')
 src = Template(filein.read())
 #document data
 games = "This is the title"
-d={ 'games': ''.join(games_divs), 'matchDay': match_day}
+d = {
+    'games': ''.join(games_divs),
+    'matchDay': match_day,
+    'fcurl': cfg['FC_URL']
+}
 #do the substitution
 result = src.substitute(d)
 
