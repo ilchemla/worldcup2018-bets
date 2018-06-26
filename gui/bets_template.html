@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Send your bets!</title>
+
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="jquery.countdown.min.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">AIMVL World Cup Bets</a>
+</nav>
+<main role="main" class="container">
+    <h1 class="text-center">Round $matchDay</h1>
+    <h3 class="text-center" id="getting-started"></h3>
+    <div class="row">
+    <div class="col-12">
+    <form class="pb-4">
+        <div class="form-group">
+            <label >Employee ID</label>
+            <input type="text" class="form-control" name="employee_id" placeholder="employee_id" required>
+        </div>
+        <div class="form-group">
+            <label >Employee Name</label>
+            <input type="text" class="form-control" name="employee_name" placeholder="employee_name" required>
+        </div>
+        <table class="table">
+            $games
+        </table>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <button id="prosubmit" type="submit" class="btn btn-primary" data-loading-text="loading stuff...">Submit</button>
+            </div>
+        </div>
+    </form>
+    </div>
+    </div>
+</main>
+</body>
+</html>

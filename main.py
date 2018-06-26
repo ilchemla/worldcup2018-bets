@@ -1,0 +1,83 @@
+from operator import itemgetter
+
+import requests
+import json
+import csv
+
+from utils.DingTalk import DingtalkRobot
+from config.config import cfg
+
+contents = requests.get('http://api.football-data.org/v1/competitions/467/fixtures')
+contents = json.loads(contents.text)
+
+# Get Match Results
+games_results = []
+for ids, game in enumerate(contents['fixtures']):
+    if game['matchday'] > 3:
+        continue
+
+    result = 'X'
+    if game['result']['goalsHomeTeam'] > game['result']['goalsAwayTeam']:
+        result = '1'
+
+    if game['result']['goalsHomeTeam'] < game['result']['goalsAwayTeam']:
+        result = '2'
+
+    if game['status'] != 'FINISHED':
+        result = 'TIMED'
+
+    print("Match {} :: {} - {} :: {}".format(ids, game['homeTeamName'], game['awayTeamName'], result))
+
+    if game['status'] != 'FINISHED':
+        continue
+
+    games_results.append(result)
+
+print('Current finished game: {}'.format(len(games_results)))
+
+# Get Bets
+players_bets = []
+with open('bets.csv', 'rb') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        for idx, row in enumerate(spamreader):
+            if idx == 0:
+                continue
+
+            row = row[0].split(',')
+            employee_id = row[0]
+            employee_username = row[1]
+            player_bets = row[2:]
+            players_bets.append({
+                'employee_id': employee_id,
+                'employee_username': employee_username,
+                'bets': player_bets
+            })
+
+# Compute score
+## Init score
+players_scores = {}
+for player in players_bets:
+    players_scores[player['employee_username']] = 0
+
+
+for game_id, game_score in enumerate(games_results):
+    for player_id, player in enumerate(players_bets):
+        if players_bets[player_id]['bets'][game_id] == game_score:
+            players_scores[player['employee_username']] += 1
+
+print players_scores
+
+# Sort results
+sorted_results = sorted(players_scores.items(), key=itemgetter(1), reverse=True)
+
+# Print to DingTalk
+robot = DingtalkRobot(token=cfg['DINGTALK_TOKEN'])
+msg = 'Please find current statistics:\n'
+msg += 'Current finished game: {}\n\n'.format(len(games_results))
+for score in sorted_results:
+    msg += '{}:\t\t{}\n'.format(score[0], score[1])
+
+print(msg)
+
+#robot.send_text(msg)
+
