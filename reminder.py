@@ -1,11 +1,14 @@
+import click
 import csv
 
 from utils.DingTalk import DingtalkRobot
 from config.config import cfg
 
-# Get Bets
-players_bets = []
-with open('bets.csv', 'rb') as csvfile:
+
+def get_bets():
+    # Get Bets
+    players_bets = []
+    with open('bets.csv', 'rb') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for idx, row in enumerate(spamreader):
             if idx == 0:
@@ -21,19 +24,37 @@ with open('bets.csv', 'rb') as csvfile:
                 'bets': player_bets
             })
 
-to_remind = []
-for player in players_bets:
-    size = len(player['bets'])
-    if size != 48:
-        to_remind.append(player['employee_username'])
+    return players_bets
 
-print(to_remind)
 
-msg = ''
-for user in to_remind:
-    msg += '@' + user + '\n'
+def get_who_to_remind(players_bets):
+    to_remind = []
+    for player in players_bets:
+        size = len(player['bets'])
+        if size != 48:
+            to_remind.append(player['employee_username'])
 
-msg += 'You have less than 30minutes to send your bets for Round 3!'
+    print('Players to remind: {}'.format(to_remind))
+    return to_remind
 
-robot = DingtalkRobot(token=cfg['DINGTALK_TOKEN'])
-#robot.send_text(msg)
+
+@click.command()
+@click.option('--dryrun', is_flag=True,
+              help='Enables verbose mode.')
+def remind(dryrun):
+    players_bets = get_bets()
+    to_remind = get_who_to_remind(players_bets)
+
+    msg = ''
+    for user in to_remind:
+        msg += '@' + user + '\n'
+
+    msg += 'You have less than 30minutes to send your bets for Round 3!'
+
+    robot = DingtalkRobot(token=cfg['DINGTALK_TOKEN'])
+    if not dryrun:
+        robot.send_text(msg)
+
+
+if __name__ == '__main__':
+    remind()
