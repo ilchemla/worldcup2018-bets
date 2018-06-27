@@ -1,9 +1,11 @@
+import os
 from operator import itemgetter
 
 import requests
 import json
 import csv
 
+from utils.Bets import Bets
 from utils.DingTalk import DingtalkRobot
 from config.config import cfg
 
@@ -36,22 +38,9 @@ for ids, game in enumerate(contents['fixtures']):
 print('Current finished game: {}'.format(len(games_results)))
 
 # Get Bets
-players_bets = []
-with open('bets.csv', 'rb') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        for idx, row in enumerate(spamreader):
-            if idx == 0:
-                continue
-
-            row = row[0].split(',')
-            employee_id = row[0]
-            employee_username = row[1]
-            player_bets = row[2:]
-            players_bets.append({
-                'employee_id': employee_id,
-                'employee_username': employee_username,
-                'bets': player_bets
-            })
+current_folder = os.path.dirname(os.path.realpath(__file__))
+bets_file = os.path.join(current_folder, 'bets.csv')
+players_bets = Bets(bets_file).get_all_bets()
 
 # Compute score
 ## Init score
