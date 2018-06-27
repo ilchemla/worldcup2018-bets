@@ -1,8 +1,8 @@
 $('document').ready(function(){
     $("#getting-started")
-      .countdown("2018/06/25 16:30", function(event) {
+      .countdown("2018/06/30 16:50", function(event) {
         $(this).text(
-          "End of bets: " + event.strftime('%H:%M:%S')
+          "End of bets: " + event.strftime('%d days, %H:%M:%S')
         );
       });
 
