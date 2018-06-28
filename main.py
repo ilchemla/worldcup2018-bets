@@ -47,7 +47,7 @@ for player in players_bets:
 for game_id, game_score in enumerate(games_results):
     for player_id, player in enumerate(players_bets):
         if players_bets[player_id]['bets'][game_id] == game_score:
-            players_scores[player['employee_username']] += 1
+            players_scores[player['employee_username']] += Games.get_match_weight(game_id)
 
 print players_scores
 
