@@ -12,8 +12,8 @@ def get_fixtures():
 
 
 def get_match_weight(match_id):
-    weights = [1, 1, 1, 2, 4, 8, 0, 16]
-    match_days = [
+    weight_per_round = [1, 1, 1, 2, 4, 8, 0, 16]
+    match_ids = [
         range(0, 16),
         range(16, 32),
         range(32, 48),
@@ -24,8 +24,8 @@ def get_match_weight(match_id):
         [63]
     ]
 
-    for day, ids in enumerate(match_days):
+    for day, ids in enumerate(match_ids):
         if match_id in ids:
-            return weights[day]
+            return weight_per_round[day]
 
     return 0
