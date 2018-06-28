@@ -4,11 +4,20 @@ import requests
 from config.config import cfg
 
 
+def get_headers():
+    return {'X-Auth-Token': cfg['FOOTBALL']['API_TOKEN'], 'X-Response-Control': 'minified'}
+
+
 def get_fixtures():
-    headers = {'X-Auth-Token': cfg['FOOTBALL']['API_TOKEN'], 'X-Response-Control': 'minified'}
-    contents = requests.get(cfg['FOOTBALL']['API_ENDPOINT'], headers=headers)
+    contents = requests.get(cfg['FOOTBALL']['API_ENDPOINT'], headers=get_headers())
     contents = json.loads(contents.text)
     return contents['fixtures']
+
+
+def get_team_flag(team_id):
+    response_ = requests.get('http://api.football-data.org/v1/teams/' + str(team_id), headers=get_headers())
+    response_ = json.loads(response_.text)
+    return response_['crestUrl']
 
 
 def get_match_weight(match_id):
