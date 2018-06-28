@@ -1,1 +1,5 @@
 DINGTALK_TOKEN: '<TOKEN>'
+FC_URL: 'https://*.eu-central-1.fc.aliyuncs.com/endpoint'
+FOOTBALL:
+  API_ENDPOINT: 'http://api.football-data.org/v1/competitions/467/fixtures'
+  API_TOKEN: '<TOKEN>'

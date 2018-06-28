@@ -1,20 +1,15 @@
 import os
 from operator import itemgetter
 
-import requests
-import json
-import csv
-
+from utils import Games
 from utils.Bets import Bets
 from utils.DingTalk import DingtalkRobot
 from config.config import cfg
 
-contents = requests.get('http://api.football-data.org/v1/competitions/467/fixtures')
-contents = json.loads(contents.text)
-
 # Get Match Results
+fixtures = Games.get_fixtures()
 games_results = []
-for ids, game in enumerate(contents['fixtures']):
+for ids, game in enumerate(fixtures):
     if game['matchday'] > 3:
         continue
 
