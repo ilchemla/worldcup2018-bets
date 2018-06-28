@@ -8,6 +8,7 @@ class DingtalkRobot:
         self.access_url = self.BaseUrl + token
 
     def send_text(self, content):
+        print('Sending message to DingTalk Channel...')
         message = {
             'msgtype': 'text',
             'text': {
