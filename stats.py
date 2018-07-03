@@ -13,14 +13,14 @@ from utils.DingTalk import DingtalkRobot
               help='Enables verbose mode.')
 def stats(dryrun):
     msg = 'Hello friends, \n' \
-          'I took some time to compute some statistics for tonight\'s games\n\n'
+          'I took some time to compute some statistics for today\'s games\n\n'
 
     current_folder = os.path.dirname(os.path.realpath(__file__))
     bets_file = os.path.join(current_folder, 'bets.csv')
     player_bets = Bets(bets_file).get_all_bets()
 
     games_stats = {}
-    games_ids = [46, 47]
+    games_ids = [54, 55]
 
     fixtures = Games.get_fixtures()
 
@@ -34,7 +34,8 @@ def stats(dryrun):
     for player in player_bets:
         bets = player['bets']
         for game in games_ids:
-            games_stats[game][bets[game]] += 1
+            if bets[game] != '0':
+                games_stats[game][bets[game]] += 1
 
     for game in games_ids:
         msg += 'For Match {} :: {} - {} \n'.format(game, fixtures[game]['homeTeamName'], fixtures[game]['awayTeamName'])

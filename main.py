@@ -10,7 +10,7 @@ from config.config import cfg
 fixtures = Games.get_fixtures()
 games_results = []
 for ids, game in enumerate(fixtures):
-    if game['matchday'] > 3:
+    if game['matchday'] > 4:
         continue
 
     result = 'X'
@@ -19,6 +19,13 @@ for ids, game in enumerate(fixtures):
 
     if game['result']['goalsHomeTeam'] < game['result']['goalsAwayTeam']:
         result = '2'
+
+    if 'penaltyShootout' in game['result']:
+        if game['result']['penaltyShootout']['goalsHomeTeam'] > game['result']['penaltyShootout']['goalsAwayTeam']:
+            result = '1'
+
+        if game['result']['penaltyShootout']['goalsHomeTeam'] < game['result']['penaltyShootout']['goalsAwayTeam']:
+            result = '2'
 
     if game['status'] != 'FINISHED':
         result = 'TIMED'

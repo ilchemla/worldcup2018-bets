@@ -31,7 +31,7 @@ def get_who_to_remind(players_bets):
     to_remind = []
     for player in players_bets:
         size = len(player['bets'])
-        if size != 48:
+        if size != 56:
             to_remind.append(player['employee_username'])
 
     print('Players to remind: {}'.format(to_remind))
@@ -49,7 +49,7 @@ def remind(dryrun):
     for user in to_remind:
         msg += '@' + user + '\n'
 
-    msg += 'You have less than 30minutes to send your bets for Round 3!'
+    msg += 'You have 24h to send your bets for Round 4!'
 
     robot = DingtalkRobot(token=cfg['DINGTALK_TOKEN'])
     if not dryrun:

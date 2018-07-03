@@ -34,8 +34,7 @@ def generate_gui(match_day):
         div += '<option selected value> -- select your bet -- </option>'
         div += '<option value="1">{} wins (1)</option>'.format(game['homeTeamName'])
         div += '<option value="2">{} wins (2)</option>'.format(game['awayTeamName'])
-        if match_day < 4:
-            div += '<option value="X">Draw (X)</option>'
+        div += '<option value="X">Draw (X)</option>'
         div += '</select>'
         div += '</td>'
         div += '</tr>'
