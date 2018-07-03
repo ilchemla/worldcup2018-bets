@@ -13,27 +13,27 @@ def generate_gui(match_day):
     print('Generating bets table for round {}...'.format(match_day))
 
     # Get fixtures
-    fixtures = Games.get_fixtures()
+    fixtures = Games.get_fixtures_v2()
     games_divs = []
     date_format = "%Y-%m-%dT%H:%M:%SZ"
     for ids, game in enumerate(fixtures):
-        if game['matchday'] != match_day:
+        if game['stage'] != 'QUARTER_FINALS':
             continue
 
-        date_obj = datetime.datetime.strptime(game['date'], date_format)
+        date_obj = datetime.datetime.strptime(game['utcDate'], date_format)
         date_obj += datetime.timedelta(hours=3)
 
-        homeTeamFlag = '<img src={} width=32/>'.format(Games.get_team_flag(game['homeTeamId']))
-        awayTeamFlag = '<img src={} width=32/>'.format(Games.get_team_flag(game['awayTeamId']))
+        homeTeamFlag = '<img src={} width=32/>'.format(Games.get_team_flag(game['homeTeam']['id']))
+        awayTeamFlag = '<img src={} width=32/>'.format(Games.get_team_flag(game['awayTeam']['id']))
 
         div = '<tr>'
-        div += "<td>Match {}</td><td>{} {} - {} {}</td>".format(ids, homeTeamFlag, game['homeTeamName'], game['awayTeamName'], awayTeamFlag)
+        div += "<td>Match {}</td><td>{} {} - {} {}</td>".format(ids, homeTeamFlag, game['homeTeam']['name'], game['awayTeam']['name'], awayTeamFlag)
         div += "<td>{}</td>".format(date_obj.strftime('%d %b %Y %H:%M %Z%z'))
         div += '<td>'
         div += '<select name="games[{}]" class="form-control" required>'
         div += '<option selected value> -- select your bet -- </option>'
-        div += '<option value="1">{} wins (1)</option>'.format(game['homeTeamName'])
-        div += '<option value="2">{} wins (2)</option>'.format(game['awayTeamName'])
+        div += '<option value="1">{} wins (1)</option>'.format(game['homeTeam']['name'])
+        div += '<option value="2">{} wins (2)</option>'.format(game['awayTeam']['name'])
         div += '<option value="X">Draw (X)</option>'
         div += '</select>'
         div += '</td>'

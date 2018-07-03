@@ -14,6 +14,13 @@ def get_fixtures():
     return contents['fixtures']
 
 
+def get_fixtures_v2():
+    url = cfg['FOOTBALL']['API_ENDPOINT_V2'] + '/competitions/2000/matches'
+    contents = requests.get(url, headers=get_headers())
+    contents = json.loads(contents.text)
+    return contents['matches']
+
+
 def get_team_flag(team_id):
     response_ = requests.get('http://api.football-data.org/v1/teams/' + str(team_id), headers=get_headers())
     response_ = json.loads(response_.text)
